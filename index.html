@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galaxy Notes</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #f1f5f9;
+      min-height: 100vh;
+      padding: 30px 15px;
+      background-color: #090a1a;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(120, 40, 200, 0.35), transparent 45%),
+        radial-gradient(circle at 80% 30%, rgba(30, 100, 220, 0.3), transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(180, 40, 140, 0.25), transparent 50%),
+        radial-gradient(1.5px 1.5px at 15% 10%, #fff, transparent),
+        radial-gradient(1px 1px at 45% 25%, #e2e8f0, transparent),
+        radial-gradient(2px 2px at 75% 15%, #fff, transparent),
+        radial-gradient(1.5px 1.5px at 85% 65%, #cbd5e1, transparent),
+        radial-gradient(1px 1px at 25% 75%, #fff, transparent),
+        radial-gradient(1.5px 1.5px at 60% 80%, #e2e8f0, transparent);
+      background-attachment: fixed;
+    }
+
+    .container { max-width: 820px; margin: 0 auto; }
+    h1 { text-align: center; font-size: 1.8rem; margin-bottom: 20px; letter-spacing: 0.5px; }
+
+    .glass {
+      background: rgba(18, 22, 42, 0.78);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .editor-box { margin-bottom: 20px; }
+    .row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+
+    input[type="text"], select {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+    input[type="text"]:focus, select:focus { border-color: #818cf8; }
+    select option { background: #161b33; color: #fff; }
+    #noteTitle { flex: 1; min-width: 200px; }
+
+    .toolbar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .toolbar button {
+      background: rgba(255, 255, 255, 0.1);
+      color: #f8fafc;
+      border: none;
+      padding: 6px 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .toolbar button:hover { background: rgba(129, 140, 248, 0.45); }
+
+    #noteContent {
+      min-height: 120px;
+      max-height: 300px;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 8px;
+      padding: 12px;
+      line-height: 1.55;
+      outline: none;
+    }
+    #noteContent:empty:before {
+      content: attr(data-placeholder);
+      color: #94a3b8;
+    }
+    #noteContent ul, #noteContent ol, .note-body ul, .note-body ol {
+      padding-left: 22px;
+    }
+
+    .actions { display: flex; gap: 10px; margin-top: 12px; justify-content: flex-end; }
+    .btn {
+      border: none;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #fff;
+    }
+    .btn-primary { background: linear-gradient(135deg, #6366f1, #a855f7); }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-secondary { background: rgba(255, 255, 255, 0.14); }
+
+    .filter-bar { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+    #searchInput { flex: 1; min-width: 220px; }
+
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 14px;
+    }
+    .note-card { display: flex; flex-direction: column; justify-content: space-between; }
+    .note-header { display: flex; justify-content: space-between; align-items: start; gap: 8px; margin-bottom: 8px; }
+    .note-title { font-size: 1.05rem; font-weight: 600; word-break: break-word; }
+    .badge {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(129, 140, 248, 0.25);
+      color: #c7d2fe;
+      white-space: nowrap;
+    }
+    .note-body {
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      line-height: 1.5;
+      margin-bottom: 14px;
+      word-break: break-word;
+    }
+    .note-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 10px;
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+    .note-btns button {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #f1f5f9;
+      padding: 4px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      margin-left: 5px;
+    }
+    .note-btns .del-btn:hover { background: #ef4444; border-color: #ef4444; }
+    .note-btns .edit-btn:hover { background: #6366f1; border-color: #6366f1; }
+    .empty { text-align: center; color: #94a3b8; grid-column: 1 / -1; padding: 30px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✨ Galaxy Notes</h1>
+
+    <!-- Khung tạo / sửa ghi chú -->
+    <div class="glass editor-box">
+      <div class="row">
+        <input type="text" id="noteTitle" placeholder="Tiêu đề ghi chú...">
+        <select id="noteCategory">
+          <option value="Chung">Chung</option>
+          <option value="Học tập">Học tập</option>
+          <option value="Công việc">Công việc</option>
+          <option value="Ý tưởng">Ý tưởng</option>
+          <option value="Cá nhân">Cá nhân</option>
+        </select>
+      </div>
+
+      <div class="toolbar">
+        <button type="button" onmousedown="event.preventDefault()" onclick="format('bold')"><b>B</b></button>
+        <button type="button" onmousedown="event.preventDefault()" onclick="format('italic')"><i>I</i></button>
+        <button type="button" onmousedown="event.preventDefault()" onclick="format('underline')"><u>U</u></button>
+        <button type="button" onmousedown="event.preventDefault()" onclick="format('insertUnorderedList')">• Danh sách</button>
+        <button type="button" onmousedown="event.preventDefault()" onclick="format('insertOrderedList')">1. Đánh số</button>
+        <button type="button" onmousedown="event.preventDefault()" onclick="format('removeFormat')">Xóa định dạng</button>
+      </div>
+
+      <div id="noteContent" contenteditable="true" data-placeholder="Nhập nội dung ghi chú..."></div>
+
+      <div class="actions">
+        <button id="cancelBtn" class="btn btn-secondary" style="display:none;" onclick="resetForm()">Hủy</button>
+        <button id="saveBtn" class="btn btn-primary" onclick="saveNote()">Lưu ghi chú</button>
+      </div>
+    </div>
+
+    <!-- Tìm kiếm & lọc phân loại -->
+    <div class="filter-bar">
+      <input type="text" id="searchInput" placeholder="🔍 Tìm theo tiêu đề hoặc nội dung..." oninput="renderNotes()">
+      <select id="filterCategory" onchange="renderNotes()">
+        <option value="Tất cả">Tất cả phân loại</option>
+        <option value="Chung">Chung</option>
+        <option value="Học tập">Học tập</option>
+        <option value="Công việc">Công việc</option>
+        <option value="Ý tưởng">Ý tưởng</option>
+        <option value="Cá nhân">Cá nhân</option>
+      </select>
+    </div>
+
+    <!-- Danh sách ghi chú -->
+    <div id="noteList" class="notes-grid"></div>
+  </div>
+
+  <script>
+    let notes = JSON.parse(localStorage.getItem('galaxy_notes')) || [];
+    let editingId = null;
+
+    function format(cmd) {
+      document.execCommand(cmd, false, null);
+      document.getElementById('noteContent').focus();
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>"']/g, m => ({ '&':'&', '<':'<', '>':'>', '"':'"', "'":''' }[m]));
+    }
+
+    function saveNote() {
+      const title = document.getElementById('noteTitle').value.trim() || 'Không có tiêu đề';
+      const category = document.getElementById('noteCategory').value;
+      const contentEl = document.getElementById('noteContent');
+      const content = contentEl.innerHTML.trim();
+
+      if (!contentEl.innerText.trim()) return;
+
+      const time = new Date().toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' });
+
+      if (editingId) {
+        const idx = notes.findIndex(n => n.id === editingId);
+        if (idx !== -1) notes[idx] = { ...notes[idx], title, category, content, updatedAt: time };
+      } else {
+        notes.unshift({ id: Date.now(), title, category, content, updatedAt: time });
+      }
+
+      localStorage.setItem('galaxy_notes', JSON.stringify(notes));
+      resetForm();
+      renderNotes();
+    }
+
+    function editNote(id) {
+      const note = notes.find(n => n.id === id);
+      if (!note) return;
+      editingId = id;
+      document.getElementById('noteTitle').value = note.title;
+      document.getElementById('noteCategory').value = note.category;
+      document.getElementById('noteContent').innerHTML = note.content;
+      document.getElementById('saveBtn').textContent = 'Cập nhật';
+      document.getElementById('cancelBtn').style.display = 'inline-block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deleteNote(id) {
+      notes = notes.filter(n => n.id !== id);
+      localStorage.setItem('galaxy_notes', JSON.stringify(notes));
+      if (editingId === id) resetForm();
+      renderNotes();
+    }
+
+    function resetForm() {
+      editingId = null;
+      document.getElementById('noteTitle').value = '';
+      document.getElementById('noteCategory').value = 'Chung';
+      document.getElementById('noteContent').innerHTML = '';
+      document.getElementById('saveBtn').textContent = 'Lưu ghi chú';
+      document.getElementById('cancelBtn').style.display = 'none';
+    }
+
+    function renderNotes() {
+      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      const filterCat = document.getElementById('filterCategory').value;
+      const list = document.getElementById('noteList');
+
+      const filtered = notes.filter(n => {
+        const matchCat = filterCat === 'Tất cả' || n.category === filterCat;
+        const plainText = n.content.replace(/<[^>]*>/g, '').toLowerCase();
+        const matchText = n.title.toLowerCase().includes(keyword) || plainText.includes(keyword);
+        return matchCat && matchText;
+      });
+
+      if (!filtered.length) {
+        list.innerHTML = '<div class="glass empty">Chưa có ghi chú nào phù hợp.</div>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(n => `
+        <div class="glass note-card">
+          <div>
+            <div class="note-header">
+              <div class="note-title">${escapeHTML(n.title)}</div>
+              <span class="badge">${escapeHTML(n.category)}</span>
+            </div>
+            <div class="note-body">${n.content}</div>
+          </div>
+          <div class="note-footer">
+            <span>${n.updatedAt}</span>
+            <div class="note-btns">
+              <button class="edit-btn" onclick="editNote(${n.id})">Sửa</button>
+              <button class="del-btn" onclick="deleteNote(${n.id})">Xóa</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    renderNotes();
+  </script>
+</body>
+</html>
