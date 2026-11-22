@@ -32,7 +32,7 @@
     .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
     h1 { font-size: 1.7rem; letter-spacing: 0.5px; }
 
-    .user-info { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+    .user-info { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; }
     .user-info img { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); }
 
     .glass {
@@ -44,53 +44,50 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
     }
 
-    /* Nút hành tinh + Tooltip */
+    /* Nút hành tinh + Tên chức năng bên dưới */
     .planet-btn {
-      position: relative;
       display: inline-flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
+      gap: 4px;
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      cursor: pointer;
+      padding: 2px 4px;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+    .planet-btn svg {
+      width: 38px;
+      height: 38px;
       padding: 6px;
       border-radius: 50%;
       border: 1px solid rgba(255, 255, 255, 0.16);
       background: rgba(255, 255, 255, 0.08);
-      cursor: pointer;
-      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      display: block;
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
-    .planet-btn svg { width: 100%; height: 100%; display: block; }
-    .planet-btn:hover {
-      transform: translateY(-2px) scale(1.1);
+    .planet-btn span {
+      font-size: 0.7rem;
+      line-height: 1.1;
+      white-space: nowrap;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+    }
+    .planet-btn:hover { transform: translateY(-2px); color: #fff; }
+    .planet-btn:hover svg {
+      transform: scale(1.08);
       background: rgba(129, 140, 248, 0.25);
       box-shadow: 0 0 14px rgba(168, 85, 247, 0.55);
       border-color: rgba(255, 255, 255, 0.4);
     }
-    .planet-btn.lg { width: 58px; height: 58px; padding: 8px; }
-    .planet-btn.sm { width: 32px; height: 32px; padding: 4px; }
-    .planet-btn.danger:hover {
+    .planet-btn.lg svg { width: 58px; height: 58px; padding: 8px; }
+    .planet-btn.lg span { font-size: 0.85rem; font-weight: 600; margin-top: 2px; }
+    .planet-btn.sm svg { width: 32px; height: 32px; padding: 4px; }
+    .planet-btn.sm span { font-size: 0.66rem; }
+    .planet-btn.danger:hover svg {
       background: rgba(239, 68, 68, 0.3);
       box-shadow: 0 0 14px rgba(239, 68, 68, 0.65);
     }
-    .planet-btn::after {
-      content: attr(data-tip);
-      position: absolute;
-      bottom: calc(100% + 8px);
-      left: 50%;
-      transform: translateX(-50%) translateY(4px);
-      background: rgba(10, 12, 28, 0.95);
-      color: #f8fafc;
-      font-size: 0.75rem;
-      padding: 4px 8px;
-      border-radius: 6px;
-      white-space: nowrap;
-      pointer-events: none;
-      opacity: 0;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      transition: opacity 0.15s ease, transform 0.15s ease;
-      z-index: 50;
-    }
-    .planet-btn:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     .login-box { text-align: center; padding: 50px 20px; margin-top: 40px; }
     .login-box p { color: #cbd5e1; margin: 12px 0 22px; }
@@ -113,9 +110,9 @@
 
     .toolbar {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
-      align-items: center;
+      align-items: flex-start;
       margin-bottom: 10px;
       padding-bottom: 10px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.12);
@@ -125,7 +122,7 @@
     .bg-panel {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
       padding: 10px;
       margin-bottom: 10px;
@@ -174,7 +171,7 @@
       cursor: zoom-in;
     }
 
-    .actions { display: flex; gap: 12px; margin-top: 12px; justify-content: flex-end; align-items: center; }
+    .actions { display: flex; gap: 14px; margin-top: 12px; justify-content: flex-end; align-items: center; }
 
     .filter-bar { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
     #searchInput { flex: 1; min-width: 220px; }
@@ -221,7 +218,7 @@
       font-size: 0.78rem;
       color: #cbd5e1;
     }
-    .note-btns { display: flex; gap: 6px; }
+    .note-btns { display: flex; gap: 8px; }
     .empty { text-align: center; color: #94a3b8; grid-column: 1 / -1; padding: 30px; }
     .hidden { display: none !important; }
 
@@ -242,16 +239,16 @@
     <div class="topbar">
       <h1>✨ Galaxy Notes</h1>
       <div class="user-info">
-        <button class="planet-btn" data-tip="Nền sảnh chính" onclick="toggleLobbyModal(true)">
-          <!-- Sao Thiên Vương / Tinh vân -->
+        <button class="planet-btn" onclick="toggleLobbyModal(true)">
           <svg viewBox="0 0 36 36"><defs><linearGradient id="uranus" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#67e8f9"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient></defs><circle cx="18" cy="18" r="10" fill="url(#uranus)"/><ellipse cx="18" cy="18" rx="16" ry="5" fill="none" stroke="#bae6fd" stroke-width="2" transform="rotate(-25 18 18)"/></svg>
+          <span>Nền sảnh</span>
         </button>
         <div id="userBar" class="user-info hidden">
           <img id="userAvatar" src="" alt="">
           <span id="userName"></span>
-          <button class="planet-btn danger" data-tip="Đăng xuất" onclick="logout()">
-            <!-- Hố đen -->
+          <button class="planet-btn danger" onclick="logout()">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="4 3"/><circle cx="18" cy="18" r="9" fill="#020617" stroke="#fb923c" stroke-width="1.5"/></svg>
+            <span>Đăng xuất</span>
           </button>
         </div>
       </div>
@@ -259,10 +256,10 @@
 
     <div id="loginView" class="glass login-box">
       <h2>Đồng bộ ghi chú mọi thiết bị</h2>
-      <p>Nhấn vào Trái Đất bên dưới để đăng nhập bằng tài khoản Google.</p>
-      <button class="planet-btn lg" data-tip="Đăng nhập với Google" onclick="login()">
-        <!-- Trái Đất -->
+      <p>Đăng nhập bằng tài khoản Google để lưu và xem ghi chú trên điện thoại lẫn máy tính.</p>
+      <button class="planet-btn lg" onclick="login()">
         <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="#2563eb"/><path d="M11 10c3-1 6 1 5 4s-4 3-3 6 4 4 2 7c-5-1-9-6-9-11 0-2 2-5 5-6zm13 2c2 2 3 5 2 8-2 1-4-1-5-3s1-4 3-5z" fill="#22c55e"/><circle cx="18" cy="18" r="14" fill="none" stroke="#93c5fd" stroke-width="1.2"/></svg>
+        <span>Đăng nhập Google</span>
       </button>
     </div>
 
@@ -280,37 +277,37 @@
         </div>
 
         <div class="toolbar">
-          <button type="button" class="planet-btn sm" data-tip="In đậm (B)" onmousedown="event.preventDefault()" onclick="format('bold')">
-            <!-- Sao Hỏa -->
+          <button type="button" class="planet-btn sm" onmousedown="event.preventDefault()" onclick="format('bold')">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="#ef4444"/><circle cx="13" cy="14" r="3" fill="#b91c1c"/><circle cx="23" cy="22" r="2.5" fill="#dc2626"/><text x="18" y="22" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">B</text></svg>
+            <span>In đậm</span>
           </button>
-          <button type="button" class="planet-btn sm" data-tip="In nghiêng (I)" onmousedown="event.preventDefault()" onclick="format('italic')">
-            <!-- Sao Thổ -->
+          <button type="button" class="planet-btn sm" onmousedown="event.preventDefault()" onclick="format('italic')">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="9" fill="#f59e0b"/><ellipse cx="18" cy="18" rx="16" ry="4.5" fill="none" stroke="#fde68a" stroke-width="2" transform="rotate(-20 18 18)"/><text x="18" y="22" text-anchor="middle" fill="#1e1b4b" font-size="12" font-style="italic" font-weight="800">I</text></svg>
+            <span>In nghiêng</span>
           </button>
-          <button type="button" class="planet-btn sm" data-tip="Gạch chân (U)" onmousedown="event.preventDefault()" onclick="format('underline')">
-            <!-- Sao Hải Vương -->
+          <button type="button" class="planet-btn sm" onmousedown="event.preventDefault()" onclick="format('underline')">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="#3b82f6"/><path d="M8 22h20" stroke="#93c5fd" stroke-width="2"/><text x="18" y="21" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" text-decoration="underline">U</text></svg>
+            <span>Gạch chân</span>
           </button>
-          <button type="button" class="planet-btn sm" data-tip="Danh sách chấm" onmousedown="event.preventDefault()" onclick="format('insertUnorderedList')">
-            <!-- Sao Mộc -->
+          <button type="button" class="planet-btn sm" onmousedown="event.preventDefault()" onclick="format('insertUnorderedList')">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="#d97706"/><path d="M6 14h24M5 19h26M7 24h22" stroke="#fef3c7" stroke-width="2" opacity="0.7"/><circle cx="22" cy="19" r="2.5" fill="#dc2626"/></svg>
+            <span>Danh sách</span>
           </button>
-          <button type="button" class="planet-btn sm" data-tip="Danh sách số" onmousedown="event.preventDefault()" onclick="format('insertOrderedList')">
-            <!-- Sao Thủy -->
+          <button type="button" class="planet-btn sm" onmousedown="event.preventDefault()" onclick="format('insertOrderedList')">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="12" fill="#94a3b8"/><circle cx="13" cy="13" r="2.5" fill="#64748b"/><circle cx="22" cy="21" r="3" fill="#475569"/><text x="18" y="22" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1.</text></svg>
+            <span>Đánh số</span>
           </button>
-          <button type="button" class="planet-btn sm" data-tip="Thêm ảnh" onclick="document.getElementById('imageInput').click()">
-            <!-- Trái Đất nhỏ -->
+          <button type="button" class="planet-btn sm" onclick="document.getElementById('imageInput').click()">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="#0ea5e9"/><path d="M10 14c3-2 6 0 6 3s-2 5-5 5-3-5-1-8zm12 2c2 0 4 2 3 5-2 1-4-1-3-5z" fill="#4ade80"/></svg>
+            <span>Thêm ảnh</span>
           </button>
-          <button type="button" class="planet-btn sm" data-tip="Đổi nền ghi chú" onclick="toggleNoteBgPanel()">
-            <!-- Sao Kim (Hồng tím) -->
+          <button type="button" class="planet-btn sm" onclick="toggleNoteBgPanel()">
             <svg viewBox="0 0 36 36"><defs><linearGradient id="venus" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f472b6"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient></defs><circle cx="18" cy="18" r="12" fill="url(#venus)"/><circle cx="13" cy="13" r="3" fill="#fbcfe8" opacity="0.5"/></svg>
+            <span>Nền note</span>
           </button>
-          <button type="button" class="planet-btn sm" data-tip="Xóa định dạng" onmousedown="event.preventDefault()" onclick="format('removeFormat')">
-            <!-- Mặt Trăng -->
+          <button type="button" class="planet-btn sm" onmousedown="event.preventDefault()" onclick="format('removeFormat')">
             <svg viewBox="0 0 36 36"><path d="M22 7a11 11 0 1 0 7 19A9 9 0 1 1 22 7z" fill="#e2e8f0"/></svg>
+            <span>Xóa kiểu</span>
           </button>
           <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
         </div>
@@ -324,8 +321,9 @@
           <div class="bg-swatch" title="Cực quang Xanh" style="background: linear-gradient(135deg, #064e3b, #0d9488)" onclick="setNoteBg('linear-gradient(135deg, rgba(6,78,59,0.88), rgba(13,148,136,0.8))')"></div>
           <div class="bg-swatch" title="Ngân hà Hồng" style="background: linear-gradient(135deg, #500724, #be185d)" onclick="setNoteBg('linear-gradient(135deg, rgba(80,7,36,0.88), rgba(190,24,93,0.8))')"></div>
           <input type="color" class="bg-color-input" title="Chọn màu nền tùy ý" onchange="setNoteBg(this.value)">
-          <button type="button" class="planet-btn sm" data-tip="Tải ảnh nền note" onclick="document.getElementById('noteBgInput').click()">
+          <button type="button" class="planet-btn sm" onclick="document.getElementById('noteBgInput').click()">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="12" fill="#a855f7"/><circle cx="14" cy="14" r="3" fill="#fde047"/><path d="M9 24l6-6 4 4 3-3 5 5z" fill="#e9d5ff"/></svg>
+            <span>Ảnh nền</span>
           </button>
           <input type="file" id="noteBgInput" accept="image/*" style="display:none" onchange="handleNoteBgUpload(event)">
         </div>
@@ -333,13 +331,13 @@
         <div id="noteContent" contenteditable="true" data-placeholder="Nhập nội dung hoặc dán ảnh (Ctrl+V)..."></div>
 
         <div class="actions">
-          <button id="cancelBtn" class="planet-btn danger hidden" data-tip="Hủy chỉnh sửa" onclick="resetForm()">
-            <!-- Sao Diêm Vương / Hủy -->
+          <button id="cancelBtn" class="planet-btn danger hidden" onclick="resetForm()">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="#475569"/><path d="M13 13l10 10M23 13L13 23" stroke="#fca5a5" stroke-width="2.5" stroke-linecap="round"/></svg>
+            <span>Hủy</span>
           </button>
-          <button id="saveBtn" class="planet-btn" data-tip="Lưu ghi chú" onclick="saveNote()">
-            <!-- Mặt Trời -->
+          <button id="saveBtn" class="planet-btn" onclick="saveNote()">
             <svg viewBox="0 0 36 36"><defs><radialGradient id="sun"><stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#f97316"/></radialGradient></defs><circle cx="18" cy="18" r="11" fill="url(#sun)"/><path d="M18 2v4M18 30v4M2 18h4M30 18h4M6.7 6.7l2.8 2.8M26.5 26.5l2.8 2.8M29.3 6.7l-2.8 2.8M9.5 26.5l-2.8 2.8" stroke="#fde047" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>Lưu</span>
           </button>
         </div>
       </div>
@@ -365,8 +363,9 @@
     <div class="glass modal-card">
       <div class="modal-header">
         <h3>🌌 Nền sảnh chính</h3>
-        <button class="planet-btn sm danger" data-tip="Đóng" onclick="toggleLobbyModal(false)">
+        <button class="planet-btn sm danger" onclick="toggleLobbyModal(false)">
           <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="#334155"/><path d="M13 13l10 10M23 13L13 23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <span>Đóng</span>
         </button>
       </div>
       <div class="bg-panel" style="margin-bottom:0">
@@ -376,8 +375,9 @@
         <div class="bg-swatch" title="Hoàng hôn Sao Hỏa" style="background: linear-gradient(135deg, #2a0a0a, #7c2d12, #1e1b4b)" onclick="setLobbyBg('linear-gradient(135deg, #2a0a0a, #7c2d12, #1e1b4b)')"></div>
         <div class="bg-swatch" title="Cực quang Bắc Cực" style="background: linear-gradient(135deg, #022c22, #115e59, #0f172a)" onclick="setLobbyBg('linear-gradient(135deg, #022c22, #115e59, #0f172a)')"></div>
         <input type="color" class="bg-color-input" title="Chọn màu nền sảnh" onchange="setLobbyBg(this.value)">
-        <button class="planet-btn sm" data-tip="Tải ảnh nền sảnh" onclick="document.getElementById('lobbyBgInput').click()">
+        <button class="planet-btn sm" onclick="document.getElementById('lobbyBgInput').click()">
           <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="12" fill="#38bdf8"/><circle cx="14" cy="14" r="3" fill="#fde047"/><path d="M9 24l6-6 4 4 3-3 5 5z" fill="#e0f2fe"/></svg>
+          <span>Ảnh nền</span>
         </button>
         <input type="file" id="lobbyBgInput" accept="image/*" style="display:none" onchange="handleLobbyBgUpload(event)">
       </div>
@@ -415,7 +415,6 @@
     let unsubscribe = null;
     let currentNoteBg = '';
 
-    // Helper nén ảnh chung
     function compressImage(file, maxWidth, quality, callback) {
       if (!file || !file.type.startsWith('image/')) return;
       const reader = new FileReader();
@@ -434,7 +433,6 @@
       reader.readAsDataURL(file);
     }
 
-    // Tạo CSS background (thêm lớp phủ tối nếu là ảnh để chữ luôn dễ đọc)
     function formatBgStyle(bg) {
       if (!bg) return '';
       if (bg.startsWith('data:image/')) {
@@ -456,7 +454,6 @@
       }
     }
 
-    // Tải nền sảnh từ localStorage ngay khi mở trang
     applyLobbyBg(localStorage.getItem('galaxy_lobby_bg') || '');
 
     window.toggleLobbyModal = (show) => {
@@ -543,7 +540,6 @@
         document.getElementById('userName').textContent = user.displayName || user.email;
         document.getElementById('userAvatar').src = user.photoURL || '';
 
-        // Đồng bộ nền sảnh từ Firestore
         try {
           const snap = await getDoc(doc(db, "users", user.uid, "settings", "lobby"));
           if (snap.exists() && snap.data().bg !== undefined) {
@@ -625,7 +621,7 @@
       document.getElementById('noteCategory').value = note.category;
       document.getElementById('noteContent').innerHTML = note.content;
       setNoteBg(note.bg || '');
-      document.getElementById('saveBtn').setAttribute('data-tip', 'Cập nhật ghi chú');
+      document.querySelector('#saveBtn span').textContent = 'Cập nhật';
       document.getElementById('cancelBtn').classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -643,7 +639,7 @@
       document.getElementById('noteContent').innerHTML = '';
       setNoteBg('');
       document.getElementById('noteBgPanel').classList.add('hidden');
-      document.getElementById('saveBtn').setAttribute('data-tip', 'Lưu ghi chú');
+      document.querySelector('#saveBtn span').textContent = 'Lưu';
       document.getElementById('cancelBtn').classList.add('hidden');
     };
 
@@ -678,11 +674,13 @@
           <div class="note-footer">
             <span>${n.updatedAt || ''}</span>
             <div class="note-btns">
-              <button class="planet-btn sm" data-tip="Sửa" onclick="editNote('${n.id}')">
+              <button class="planet-btn sm" onclick="editNote('${n.id}')">
                 <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="9" fill="#818cf8"/><ellipse cx="18" cy="18" rx="15" ry="4.5" fill="none" stroke="#c7d2fe" stroke-width="2" transform="rotate(-25 18 18)"/></svg>
+                <span>Sửa</span>
               </button>
-              <button class="planet-btn sm danger" data-tip="Xóa" onclick="deleteNote('${n.id}')">
+              <button class="planet-btn sm danger" onclick="deleteNote('${n.id}')">
                 <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="11" fill="#dc2626"/><circle cx="14" cy="14" r="2.5" fill="#991b1b"/><path d="M14 14l8 8M22 14l-8 8" stroke="#fecaca" stroke-width="2" stroke-linecap="round"/></svg>
+                <span>Xóa</span>
               </button>
             </div>
           </div>
