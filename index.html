@@ -360,7 +360,9 @@
     };
 
     function escapeHTML(str) {
-      return str.replace(/[&<>"']/g, m => ({ '&':'&', '<':'<', '>':'>', '"':'"', "'":''' }[m]));
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
     }
 
     window.saveNote = async () => {
