@@ -46,6 +46,7 @@
 
     /* Nút hành tinh + Tên chức năng bên dưới */
     .planet-btn {
+      position: relative;
       display: inline-flex;
       flex-direction: column;
       align-items: center;
@@ -57,6 +58,7 @@
       padding: 2px 4px;
       transition: transform 0.2s ease, color 0.2s ease;
     }
+    .planet-btn svg, .planet-btn span { position: relative; z-index: 2; }
     .planet-btn svg {
       width: 38px;
       height: 38px;
@@ -80,6 +82,69 @@
       box-shadow: 0 0 14px rgba(168, 85, 247, 0.55);
       border-color: rgba(255, 255, 255, 0.4);
     }
+
+    /* Trạng thái giữ sáng kiểu tia lửa mặt trời */
+    .planet-btn.active { color: #fef08a; }
+    .planet-btn.active::before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: repeating-conic-gradient(
+        from 0deg,
+        rgba(254, 240, 138, 0.9) 0deg 8deg,
+        rgba(249, 115, 22, 0.85) 8deg 18deg,
+        transparent 18deg 36deg
+      );
+      filter: blur(2.5px);
+      transform: translate(-50%, -50%);
+      animation: solarSpin 6s linear infinite, solarFlicker 1.6s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .planet-btn.active::after {
+      content: "";
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(254, 240, 138, 0.9) 15%, rgba(249, 115, 22, 0.75) 50%, rgba(220, 38, 38, 0) 75%);
+      filter: blur(4px);
+      transform: translate(-50%, -50%);
+      animation: solarFlicker 1.2s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .planet-btn.sm.active::before { top: 18px; width: 48px; height: 48px; }
+    .planet-btn.sm.active::after { top: 18px; width: 42px; height: 42px; }
+    .planet-btn.active svg {
+      background: radial-gradient(circle, rgba(254, 240, 138, 0.35), rgba(234, 88, 12, 0.55));
+      border-color: #fef08a;
+      box-shadow:
+        0 0 8px #fef08a,
+        0 0 18px #f97316,
+        0 0 30px #dc2626;
+      transform: scale(1.1);
+    }
+    .planet-btn.active span {
+      font-weight: 700;
+      text-shadow: 0 0 6px #fef08a, 0 0 12px #f97316;
+    }
+
+    @keyframes solarSpin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to   { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    @keyframes solarFlicker {
+      from { opacity: 0.75; filter: blur(2.5px) brightness(1); }
+      to   { opacity: 1; filter: blur(3.5px) brightness(1.35); }
+    }
+
     .planet-btn.lg svg { width: 58px; height: 58px; padding: 8px; }
     .planet-btn.lg span { font-size: 0.85rem; font-weight: 600; margin-top: 2px; }
     .planet-btn.sm svg { width: 32px; height: 32px; padding: 4px; }
@@ -239,7 +304,7 @@
     <div class="topbar">
       <h1>✨ Galaxy Notes</h1>
       <div class="user-info">
-        <button class="planet-btn" onclick="toggleLobbyModal(true)">
+        <button id="lobbyBgBtn" class="planet-btn" onclick="toggleLobbyModal(true)">
           <svg viewBox="0 0 36 36"><defs><linearGradient id="uranus" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#67e8f9"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient></defs><circle cx="18" cy="18" r="10" fill="url(#uranus)"/><ellipse cx="18" cy="18" rx="16" ry="5" fill="none" stroke="#bae6fd" stroke-width="2" transform="rotate(-25 18 18)"/></svg>
           <span>Nền sảnh</span>
         </button>
@@ -277,23 +342,23 @@
         </div>
 
         <div class="toolbar">
-          <button type="button" class="planet-btn sm" onmousedown="event.preventDefault()" onclick="format('bold')">
+          <button type="button" class="planet-btn sm" data-cmd="bold" onmousedown="event.preventDefault()" onclick="format('bold')">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="#ef4444"/><circle cx="13" cy="14" r="3" fill="#b91c1c"/><circle cx="23" cy="22" r="2.5" fill="#dc2626"/><text x="18" y="22" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">B</text></svg>
             <span>In đậm</span>
           </button>
-          <button type="button" class="planet-btn sm" onmousedown="event.preventDefault()" onclick="format('italic')">
+          <button type="button" class="planet-btn sm" data-cmd="italic" onmousedown="event.preventDefault()" onclick="format('italic')">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="9" fill="#f59e0b"/><ellipse cx="18" cy="18" rx="16" ry="4.5" fill="none" stroke="#fde68a" stroke-width="2" transform="rotate(-20 18 18)"/><text x="18" y="22" text-anchor="middle" fill="#1e1b4b" font-size="12" font-style="italic" font-weight="800">I</text></svg>
             <span>In nghiêng</span>
           </button>
-          <button type="button" class="planet-btn sm" onmousedown="event.preventDefault()" onclick="format('underline')">
+          <button type="button" class="planet-btn sm" data-cmd="underline" onmousedown="event.preventDefault()" onclick="format('underline')">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="#3b82f6"/><path d="M8 22h20" stroke="#93c5fd" stroke-width="2"/><text x="18" y="21" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" text-decoration="underline">U</text></svg>
             <span>Gạch chân</span>
           </button>
-          <button type="button" class="planet-btn sm" onmousedown="event.preventDefault()" onclick="format('insertUnorderedList')">
+          <button type="button" class="planet-btn sm" data-cmd="insertUnorderedList" onmousedown="event.preventDefault()" onclick="format('insertUnorderedList')">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="#d97706"/><path d="M6 14h24M5 19h26M7 24h22" stroke="#fef3c7" stroke-width="2" opacity="0.7"/><circle cx="22" cy="19" r="2.5" fill="#dc2626"/></svg>
             <span>Danh sách</span>
           </button>
-          <button type="button" class="planet-btn sm" onmousedown="event.preventDefault()" onclick="format('insertOrderedList')">
+          <button type="button" class="planet-btn sm" data-cmd="insertOrderedList" onmousedown="event.preventDefault()" onclick="format('insertOrderedList')">
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="12" fill="#94a3b8"/><circle cx="13" cy="13" r="2.5" fill="#64748b"/><circle cx="22" cy="21" r="3" fill="#475569"/><text x="18" y="22" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1.</text></svg>
             <span>Đánh số</span>
           </button>
@@ -301,7 +366,7 @@
             <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="#0ea5e9"/><path d="M10 14c3-2 6 0 6 3s-2 5-5 5-3-5-1-8zm12 2c2 0 4 2 3 5-2 1-4-1-3-5z" fill="#4ade80"/></svg>
             <span>Thêm ảnh</span>
           </button>
-          <button type="button" class="planet-btn sm" onclick="toggleNoteBgPanel()">
+          <button type="button" id="noteBgBtn" class="planet-btn sm" onclick="toggleNoteBgPanel()">
             <svg viewBox="0 0 36 36"><defs><linearGradient id="venus" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f472b6"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient></defs><circle cx="18" cy="18" r="12" fill="url(#venus)"/><circle cx="13" cy="13" r="3" fill="#fbcfe8" opacity="0.5"/></svg>
             <span>Nền note</span>
           </button>
@@ -415,6 +480,26 @@
     let unsubscribe = null;
     let currentNoteBg = '';
 
+    // Cập nhật trạng thái sáng cho các nút định dạng
+    function updateToolbarState() {
+      document.querySelectorAll('.toolbar button[data-cmd]').forEach(btn => {
+        const cmd = btn.getAttribute('data-cmd');
+        try {
+          btn.classList.toggle('active', document.queryCommandState(cmd));
+        } catch {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    const editorEl = document.getElementById('noteContent');
+    ['keyup', 'mouseup', 'focus', 'input'].forEach(evt => {
+      editorEl.addEventListener(evt, updateToolbarState);
+    });
+    document.addEventListener('selectionchange', () => {
+      if (document.activeElement === editorEl) updateToolbarState();
+    });
+
     function compressImage(file, maxWidth, quality, callback) {
       if (!file || !file.type.startsWith('image/')) return;
       const reader = new FileReader();
@@ -458,6 +543,7 @@
 
     window.toggleLobbyModal = (show) => {
       document.getElementById('lobbyModal').classList.toggle('hidden', !show);
+      document.getElementById('lobbyBgBtn').classList.toggle('active', show);
     };
 
     window.setLobbyBg = async (bg) => {
@@ -480,7 +566,9 @@
 
     // ===== NỀN TỪNG NOTE =====
     window.toggleNoteBgPanel = () => {
-      document.getElementById('noteBgPanel').classList.toggle('hidden');
+      const panel = document.getElementById('noteBgPanel');
+      const isHidden = panel.classList.toggle('hidden');
+      document.getElementById('noteBgBtn').classList.toggle('active', !isHidden);
     };
 
     window.setNoteBg = (bg) => {
@@ -503,14 +591,13 @@
     window.handleImageUpload = (event) => {
       const file = event.target.files[0];
       compressImage(file, 700, 0.7, (dataUrl) => {
-        const editor = document.getElementById('noteContent');
-        editor.focus();
+        editorEl.focus();
         document.execCommand('insertHTML', false, `<img src="${dataUrl}" alt="img"><br>`);
       });
       event.target.value = '';
     };
 
-    document.getElementById('noteContent').addEventListener('paste', (e) => {
+    editorEl.addEventListener('paste', (e) => {
       const items = e.clipboardData?.items || [];
       for (const item of items) {
         if (item.type.startsWith('image/')) {
@@ -571,8 +658,9 @@
     window.logout = () => signOut(auth);
 
     window.format = (cmd) => {
+      editorEl.focus();
       document.execCommand(cmd, false, null);
-      document.getElementById('noteContent').focus();
+      updateToolbarState();
     };
 
     function escapeHTML(str) {
@@ -585,10 +673,9 @@
       if (!currentUser) return;
       const title = document.getElementById('noteTitle').value.trim() || 'Không có tiêu đề';
       const category = document.getElementById('noteCategory').value;
-      const contentEl = document.getElementById('noteContent');
-      const content = contentEl.innerHTML.trim();
+      const content = editorEl.innerHTML.trim();
 
-      if (!contentEl.innerText.trim() && !contentEl.querySelector('img')) return;
+      if (!editorEl.innerText.trim() && !editorEl.querySelector('img')) return;
 
       if (new Blob([content, currentNoteBg]).size > 900000) {
         alert("Ghi chú vượt giới hạn ~900KB của Firestore. Hãy giảm bớt ảnh.");
@@ -619,7 +706,7 @@
       editingId = id;
       document.getElementById('noteTitle').value = note.title;
       document.getElementById('noteCategory').value = note.category;
-      document.getElementById('noteContent').innerHTML = note.content;
+      editorEl.innerHTML = note.content;
       setNoteBg(note.bg || '');
       document.querySelector('#saveBtn span').textContent = 'Cập nhật';
       document.getElementById('cancelBtn').classList.remove('hidden');
@@ -636,11 +723,13 @@
       editingId = null;
       document.getElementById('noteTitle').value = '';
       document.getElementById('noteCategory').value = 'Chung';
-      document.getElementById('noteContent').innerHTML = '';
+      editorEl.innerHTML = '';
       setNoteBg('');
       document.getElementById('noteBgPanel').classList.add('hidden');
+      document.getElementById('noteBgBtn').classList.remove('active');
       document.querySelector('#saveBtn span').textContent = 'Lưu';
       document.getElementById('cancelBtn').classList.add('hidden');
+      updateToolbarState();
     };
 
     window.renderNotes = () => {
