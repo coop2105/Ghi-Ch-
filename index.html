@@ -259,6 +259,29 @@
       padding-left: 14px;
       border-left: 2px solid rgba(129, 140, 248, 0.5);
     }
+    .note-toggle summary {
+      position: relative;
+      padding-right: 26px;
+      min-height: 22px;
+    }
+    .toggle-del {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(239, 68, 68, 0.25);
+      color: #fca5a5;
+      border: none;
+      border-radius: 4px;
+      width: 20px;
+      height: 20px;
+      line-height: 18px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .toggle-del:hover { background: #ef4444; color: #fff; }
+    .note-body .toggle-del { display: none; }
 
     .actions { display: flex; gap: 14px; margin-top: 12px; justify-content: flex-end; align-items: center; }
 
@@ -693,7 +716,7 @@
     };
     window.insertToggle = () => {
       editorEl.focus();
-      const html = `<details class="note-toggle" open><summary>Tiêu đề mục...</summary><div class="toggle-body">Nội dung bên trong...</div></details><br>`;
+      const html = `<details class="note-toggle" open><summary> <button type="button" class="toggle-del" contenteditable="false" onclick="event.preventDefault(); this.closest('details').remove()">×</button></summary><div class="toggle-body"><br></div></details><br>`;
       document.execCommand('insertHTML', false, html);
     };
 
