@@ -240,34 +240,45 @@
       cursor: zoom-in;
     }
     .note-toggle {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px;
-      padding: 6px 10px;
-      margin: 6px 0;
-    }
-    .note-toggle summary {
-      cursor: pointer;
-      font-weight: 600;
-      color: #c7d2fe;
-      outline: none;
-    }
-    .note-toggle .toggle-body {
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid rgba(255, 255, 255, 0.16);
-      padding-left: 14px;
-      border-left: 2px solid rgba(129, 140, 248, 0.5);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px;
+      padding: 10px;
+      margin: 8px 0;
     }
     .note-toggle summary {
       position: relative;
-      padding-right: 26px;
-      min-height: 22px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-right: 30px;
+      cursor: pointer;
+      outline: none;
+    }
+    .toggle-title, .note-toggle .toggle-body {
+      background: rgba(15, 20, 40, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #fff;
+      outline: none;
     }
     .toggle-title {
-      display: inline-block;
-      min-width: 70%;
-      outline: none;
+      flex: 1;
+      font-weight: 600;
+      min-height: 36px;
+    }
+    .note-toggle .toggle-body {
+      margin-top: 8px;
+      min-height: 64px;
+    }
+    .toggle-title:focus, .note-toggle .toggle-body:focus {
+      border-color: #818cf8;
+    }
+    .toggle-title:empty:before, .note-toggle .toggle-body:empty:before {
+      content: attr(data-placeholder);
+      color: #94a3b8;
+      font-weight: 400;
     }
     .toggle-del {
       position: absolute;
@@ -721,7 +732,7 @@
     };
     window.insertToggle = () => {
       editorEl.focus();
-      const html = `<details class="note-toggle" open contenteditable="false"><summary><span class="toggle-title" contenteditable="true"> </span><button type="button" class="toggle-del" onclick="event.preventDefault(); this.closest('details').remove()">×</button></summary><div class="toggle-body" contenteditable="true"><br></div></details><br>`;
+      const html = `<details class="note-toggle" open contenteditable="false"><summary><span class="toggle-title" contenteditable="true" data-placeholder="Tiêu đề mục..."></span><button type="button" class="toggle-del" onclick="event.preventDefault(); this.closest('details').remove()">×</button></summary><div class="toggle-body" contenteditable="true" data-placeholder="Nhập nội dung..."></div></details><br>`;
       document.execCommand('insertHTML', false, html);
     };
 
