@@ -264,6 +264,11 @@
       padding-right: 26px;
       min-height: 22px;
     }
+    .toggle-title {
+      display: inline-block;
+      min-width: 70%;
+      outline: none;
+    }
     .toggle-del {
       position: absolute;
       right: 0;
@@ -716,7 +721,7 @@
     };
     window.insertToggle = () => {
       editorEl.focus();
-      const html = `<details class="note-toggle" open><summary> <button type="button" class="toggle-del" contenteditable="false" onclick="event.preventDefault(); this.closest('details').remove()">×</button></summary><div class="toggle-body"><br></div></details><br>`;
+      const html = `<details class="note-toggle" open contenteditable="false"><summary><span class="toggle-title" contenteditable="true"> </span><button type="button" class="toggle-del" onclick="event.preventDefault(); this.closest('details').remove()">×</button></summary><div class="toggle-body" contenteditable="true"><br></div></details><br>`;
       document.execCommand('insertHTML', false, html);
     };
 
@@ -815,7 +820,7 @@
               <div class="note-title">${escapeHTML(n.title)}</div>
               <span class="badge">${escapeHTML(n.category)}</span>
             </div>
-            <div class="note-body">${n.content}</div>
+            <div class="note-body">${n.content.replace(/contenteditable="true"/g, '')}</div>
           </div>
           <div class="note-footer">
             <span>${n.updatedAt || ''}</span>
