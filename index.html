@@ -248,14 +248,22 @@
     }
     .note-toggle summary { list-style: none; }
     .note-toggle summary::-webkit-details-marker { display: none; }
+    .note-toggle {
+      margin-left: 24px;
+    }
     .note-toggle summary::before {
       content: "▶";
-      font-size: 0.75rem;
+      position: absolute;
+      left: -28px;
+      top: 50%;
+      transform: translateY(-50%) rotate(0deg);
+      font-size: 0.8rem;
       color: #c7d2fe;
-      transition: transform 0.2s ease;
+      transition: transform 0.25s ease;
+      padding: 4px;
     }
     .note-toggle[open] summary::before {
-      transform: rotate(90deg);
+      transform: translateY(-50%) rotate(90deg);
     }
     .toggle-title, .note-toggle .toggle-body {
       background: rgba(15, 20, 40, 0.55);
