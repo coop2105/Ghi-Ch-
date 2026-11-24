@@ -246,14 +246,16 @@
       padding: 10px;
       margin: 8px 0;
     }
-    .note-toggle summary {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding-right: 30px;
-      cursor: pointer;
-      outline: none;
+    .note-toggle summary { list-style: none; }
+    .note-toggle summary::-webkit-details-marker { display: none; }
+    .note-toggle summary::before {
+      content: "▶";
+      font-size: 0.75rem;
+      color: #c7d2fe;
+      transition: transform 0.2s ease;
+    }
+    .note-toggle[open] summary::before {
+      transform: rotate(90deg);
     }
     .toggle-title, .note-toggle .toggle-body {
       background: rgba(15, 20, 40, 0.55);
