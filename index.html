@@ -239,56 +239,57 @@
       display: block;
       cursor: zoom-in;
     }
-    .note-toggle {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 10px;
-      padding: 10px;
-      margin: 8px 0;
+   .note-toggle {
+      background: transparent;
+      border: none;
+      padding: 2px 0;
+      margin: 4px 0;
     }
-    .note-toggle summary { list-style: none; }
+    .note-toggle summary {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-right: 28px;
+      cursor: pointer;
+      outline: none;
+      list-style: none;
+    }
     .note-toggle summary::-webkit-details-marker { display: none; }
-    .note-toggle {
-      margin-left: 24px;
-    }
     .note-toggle summary::before {
       content: "▶";
-      position: absolute;
-      left: -28px;
-      top: 50%;
-      transform: translateY(-50%) rotate(0deg);
-      font-size: 0.8rem;
-      color: #c7d2fe;
-      transition: transform 0.25s ease;
-      padding: 4px;
+      font-size: 0.7rem;
+      color: #cbd5e1;
+      transition: transform 0.2s ease;
+      display: inline-block;
+      width: 14px;
+      text-align: center;
+      flex-shrink: 0;
     }
     .note-toggle[open] summary::before {
-      transform: translateY(-50%) rotate(90deg);
-    }
-    .toggle-title, .note-toggle .toggle-body {
-      background: rgba(15, 20, 40, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 8px;
-      padding: 8px 12px;
-      color: #fff;
-      outline: none;
+      transform: rotate(90deg);
     }
     .toggle-title {
       flex: 1;
-      font-weight: 600;
-      min-height: 36px;
+      background: transparent;
+      border: none;
+      padding: 2px 0;
+      color: #f1f5f9;
+      font-weight: 500;
+      outline: none;
     }
     .note-toggle .toggle-body {
-      margin-top: 8px;
-      min-height: 64px;
-    }
-    .toggle-title:focus, .note-toggle .toggle-body:focus {
-      border-color: #818cf8;
+      background: transparent;
+      border: none;
+      margin: 2px 0 4px 22px;
+      padding: 2px 0;
+      color: #e2e8f0;
+      min-height: 22px;
+      outline: none;
     }
     .toggle-title:empty:before, .note-toggle .toggle-body:empty:before {
       content: attr(data-placeholder);
-      color: #94a3b8;
-      font-weight: 400;
+      color: #64748b;
     }
     .toggle-del {
       position: absolute;
